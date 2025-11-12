@@ -1,0 +1,25 @@
+<div class="container">
+  <h2>Dynamic Form Example</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div *ngFor="let field of fields" class="form-field">
+      <label [for]="field.name">{{ field.label }}</label>
+      <input
+        [type]="field.type"
+        [id]="field.name"
+        [formControlName]="field.name"
+        [placeholder]="field.placeholder"
+      />
+      <div class="error" *ngIf="form.get(field.name)?.touched && form.get(field.name)?.invalid">
+        <small *ngIf="form.get(field.name)?.errors?.['required']">{{ field.label }} is required.</small>
+        <small *ngIf="form.get(field.name)?.errors?.['email']">Invalid email format.</small>
+        <small *ngIf="form.get(field.name)?.errors?.['minlength']">Minimum length not met.</small>
+        <small *ngIf="form.get(field.name)?.errors?.['pattern']">Invalid format.</small>
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid">Submit</button>
+  </form>
+
+  <pre>{{ form.value | json }}</pre>
+</div>
